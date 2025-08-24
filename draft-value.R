@@ -3,9 +3,7 @@ library(nflreadr)
 
 
 
-draft_df = read_csv("coding-projects/nfl-fast-r/draft_value_99")[, -1]
-
-draft_picks = load_draft_picks()
+draft_df = read_csv("coding-projects/nfl-fast-r/datasets/draft_value_99.csv")[, -1]
 
 
 
@@ -13,37 +11,45 @@ draft_picks = load_draft_picks()
 
 
 
-draft_picks = load_draft_picks()
+# draft_picks = load_draft_picks()
+# 
+# draft_value = read_csv("coding-projects/college-football/helper-datasets/fs-draft-value-chart.csv")
+# 
+# 
+# 
+# draft_df = draft_picks |>
+#   filter(season >= 2000) |>
+#   left_join(draft_value, by = c("pick" = "Pick")) |>
+#   rename(value = Value) |>
+#   mutate(team = clean_team_abbrs(team),
+#          value = if_else(pick >= 257, 100, value)) |>
+#   mutate(qb_value = if_else(category == "QB", value, 0),
+#          tier1_value = if_else(category == "DL" | category == "OL", value, 0),
+#          tier2_value = if_else(category == "WR" | category == "DB", value, 0),
+#          tier3_value = if_else(category == "RB" | category == "TE" |
+#                                  category == "LB" | category == "OG" |
+#                                  category == "FS", value, 0),
+#          tier4_value = if_else(category == "P" | category == "K" |
+#                                  category == "KR" | category == "LS", value, 0),
+#          off_value = if_else(side == "O", value, 0),
+#          def_value = if_else(side == "D", value, 0)
+#   ) |> 
+#   filter(!is.na(off_value), !is.na(def_value)) |>
+#   group_by(team, season) |>
+#   arrange(season) |>
+#   summarise(draft_value_added = sum(value),
+#             dv_off = sum(off_value),
+#             dv_def = sum(def_value),
+#             dv_qb = sum(qb_value),
+#             dv_t1 = sum(tier1_value),
+#             dv_t2 = sum(tier2_value),
+#             dv_t3 = sum(tier3_value),
+#             dv_t4 = sum(tier4_value),
+#             .groups = "drop") |>
+#   arrange(season, -draft_value_added) |>
+# #  Helps with joining with other datasets
+#   mutate(season = season - 1)
 
-draft_value = read_csv("coding-projects/college-football/fs-draft-value-chart.csv")
-
-draft_df = draft_picks |>
-  filter(season >= 2000) |>
-  left_join(draft_value, by = c("pick" = "Pick")) |>
-  rename(value = Value) |>
-  mutate(team = clean_team_abbrs(team),
-         value = if_else(pick >= 257, 100, value)) |>
-  mutate(qb_value = if_else(category == "QB", value, 0),
-         tier1_value = if_else(category == "DL" | category == "OL", value, 0),
-         tier2_value = if_else(category == "WR" | category == "DB", value, 0),
-         tier3_value = if_else(category == "RB" | category == "TE" |
-                                 category == "LB" | category == "OG" |
-                                 category == "FS", value, 0),
-         tier4_value = if_else(category == "P" | category == "K" |
-                                 category == "KR" | category == "LS", value, 0)
-  ) |>
-  group_by(team, season) |>
-  arrange(season) |>
-  summarise(draft_value_added = sum(value),
-            dv_qb = sum(qb_value),
-            dv_t1 = sum(tier1_value),
-            dv_t2 = sum(tier2_value),
-            dv_t3 = sum(tier3_value),
-            dv_t4 = sum(tier4_value),
-            .groups = "drop") |>
-  arrange(season, -draft_value_added) |>
-#  Helps with joining with other datasets
-  mutate(season = season - 1)
 
 # write.csv(draft_df, file = "draft_value_99.csv")
 
