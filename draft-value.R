@@ -33,7 +33,7 @@ draft_df = read_csv("coding-projects/nfl-fast-r/datasets/draft_value_99.csv")[, 
 #                                  category == "KR" | category == "LS", value, 0),
 #          off_value = if_else(side == "O", value, 0),
 #          def_value = if_else(side == "D", value, 0)
-#   ) |> 
+#   ) |>
 #   filter(!is.na(off_value), !is.na(def_value)) |>
 #   group_by(team, season) |>
 #   arrange(season) |>
@@ -51,6 +51,8 @@ draft_df = read_csv("coding-projects/nfl-fast-r/datasets/draft_value_99.csv")[, 
 #   mutate(season = season - 1)
 
 
+
+
 # write.csv(draft_df, file = "draft_value_99.csv")
 
 
@@ -58,13 +60,13 @@ draft_df = read_csv("coding-projects/nfl-fast-r/datasets/draft_value_99.csv")[, 
 # Draft Analysis -----------------------------------------------------
 
 
-draft_df |> filter(season == 2024) |> arrange(-draft_value_added)
+draft_df |> filter(season == 2025) |> arrange(-draft_value_added)
 
 
-ggplot(draft_df |> filter(season == 2024), 
+ggplot(draft_df |> filter(season == 2025), 
        aes(x = draft_value_added, y = reorder(team, draft_value_added))) +
   labs(
-    title = "NFL Draft Value Added (2025)",
+    title = "NFL Draft Value Added (2026)",
     subtitle = "based on Fitzgerald-Spielberger chart",
     caption = "By: Sam Burch  |  Data @nflfastR",
     x = "Draft Value Added"
@@ -102,7 +104,7 @@ draft_df |> filter(season == 2024) |> arrange(-dv_t4)
 draft_df |> filter(season == 2024)
 
 
-ggplot(draft_df |> filter(season == 2024), aes(x = dv_qb + dv_t1 + dv_t2, y = dv_t3)) +
+ggplot(draft_df |> filter(season == 2025), aes(x = dv_qb + dv_t1 + dv_t2, y = dv_t3 + dv_t4)) +
   labs(x = "Premium Positions",
        y = "Non-Premium Positions",
        title = "How NFL Teams Spent their Draft Capital",
@@ -119,8 +121,8 @@ ggplot(draft_df |> filter(season == 2024), aes(x = dv_qb + dv_t1 + dv_t2, y = dv
   scale_y_reverse() +
   nflplotR::geom_nfl_logos(aes(team_abbr = team), width = .07, alpha = .8) +
   stat_smooth(formula = y ~ x, method = 'lm', geom = 'line', se=FALSE, color='gray') +
-  nflplotR::geom_mean_lines(aes(x0 = (dv_qb + dv_t1 + dv_t2), y0 = dv_t3))
+  nflplotR::geom_mean_lines(aes(x0 = (dv_qb + dv_t1 + dv_t2), y0 = (dv_t3 + dv_t4)))
 
-# ggsave("nfl-draft-25.png", width = 16, height = 12, units = "cm")
+# ggsave("nfl-draft-26.png", width = 16, height = 12, units = "cm")
 
 
